@@ -1,0 +1,112 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select id, username, user_perms, project_perms, brand_perms, model_perms, item_perms, password_hash from users where username = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "username",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "username"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "user_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "user_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "project_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "project_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "brand_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "brand_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "model_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "model_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "item_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "item_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 7,
+        "name": "password_hash",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "password_hash"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "677175a8d01648fb9f33d3d4a0eacee8d09d87c8fb532bf87313be43d0deb901"
+}

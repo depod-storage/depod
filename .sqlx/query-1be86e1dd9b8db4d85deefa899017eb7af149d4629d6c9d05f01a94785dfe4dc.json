@@ -1,0 +1,101 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        update users\n        set user_perms = user_perms | $2\n        where id = $1\n        returning id, username, user_perms, project_perms, brand_perms, model_perms, item_perms\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "username",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "username"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "user_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "user_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "project_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "project_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "brand_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "brand_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "model_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "model_perms"
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "item_perms",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "item_perms"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Int4"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "1be86e1dd9b8db4d85deefa899017eb7af149d4629d6c9d05f01a94785dfe4dc"
+}

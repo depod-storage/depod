@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "update app_config set bootstrap = true where id = 1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "e5fc96cdec71b47fdd55fbfcb7058828f294d609d4d0a4ca1e5483e614c0d8fd"
+}

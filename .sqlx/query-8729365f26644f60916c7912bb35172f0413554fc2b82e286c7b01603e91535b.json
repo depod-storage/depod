@@ -1,0 +1,105 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            insert into items (model_id, project_id, serial, status)\n            values ($1, $2, $3, $4::item_status)\n            returning id, model_id, project_id, serial, status as \"status: ItemStatus\"\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "items",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "model_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "items",
+            "name": "model_id"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "project_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "items",
+            "name": "project_id"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "serial",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "items",
+            "name": "serial"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "status: ItemStatus",
+        "type_info": {
+          "Custom": {
+            "name": "item_status",
+            "kind": {
+              "Enum": [
+                "Active",
+                "Inactive",
+                "Broken",
+                "Service",
+                "Rental"
+              ]
+            }
+          }
+        },
+        "origin": {
+          "Table": {
+            "table": "items",
+            "name": "status"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Text",
+        {
+          "Custom": {
+            "name": "item_status",
+            "kind": {
+              "Enum": [
+                "Active",
+                "Inactive",
+                "Broken",
+                "Service",
+                "Rental"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "8729365f26644f60916c7912bb35172f0413554fc2b82e286c7b01603e91535b"
+}

@@ -5,4 +5,3 @@ cert.pem
 key.pem
 Justfile
 changelog.md
-.sqlx/

@@ -1,0 +1,74 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            select id, brand_id, name, ty as \"ty: ModelType\"\n            from models\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "models",
+            "name": "id"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "brand_id",
+        "type_info": "Uuid",
+        "origin": {
+          "Table": {
+            "table": "models",
+            "name": "brand_id"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "name",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "models",
+            "name": "name"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "ty: ModelType",
+        "type_info": {
+          "Custom": {
+            "name": "model_type",
+            "kind": {
+              "Enum": [
+                "GPS",
+                "TotalStation",
+                "HandUnit",
+                "Nivo"
+              ]
+            }
+          }
+        },
+        "origin": {
+          "Table": {
+            "table": "models",
+            "name": "ty"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "678351304b5d9d4eed024444465c2624c33eaf8000611703bd1f17431a61a92a"
+}
