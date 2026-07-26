@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-#[derive(Serialize)]
+#[derive(Serialize, sqlx::FromRow)]
 pub struct User {
     pub id: uuid::Uuid,
     pub username: String,
@@ -22,5 +22,3 @@ pub struct UserWithPass {
     pub item_perms: i32,
     pub password_hash: String,
 }
-
-

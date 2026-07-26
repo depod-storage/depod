@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "select jwt_version from users where id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "jwt_version",
+        "type_info": "Int4",
+        "origin": {
+          "Table": {
+            "table": "users",
+            "name": "jwt_version"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "0568a8f158a699b1c6230aec0b36521d4b82f08612862ae574a66ff6f172dab6"
+}

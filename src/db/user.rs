@@ -6,7 +6,7 @@ use crate::models::user::{User, UserWithPass};
 pub async fn insert_user(
     pool: &PgPool,
     username: &str,
-    password_hash: &str
+    password_hash: &str,
 ) -> Result<User, sqlx::Error> {
     sqlx::query_as!(
         User,
@@ -15,13 +15,16 @@ pub async fn insert_user(
             values ($1, $2)
             returning id, username, user_perms, project_perms, brand_perms, model_perms, item_perms
         "#,
-        username, password_hash
-    ).fetch_one(pool).await
+        username,
+        password_hash
+    )
+    .fetch_one(pool)
+    .await
 }
 
 pub async fn find_by_username_wp(
     pool: &PgPool,
-    username: &str
+    username: &str,
 ) -> Result<Option<UserWithPass>, sqlx::Error> {
     sqlx::query_as!(
         UserWithPass,
@@ -30,10 +33,7 @@ pub async fn find_by_username_wp(
     ).fetch_optional(pool).await
 }
 
-pub async fn find_by_username(
-    pool: &PgPool,
-    username: &str
-) -> Result<Option<User>, sqlx::Error> {
+pub async fn find_by_username(pool: &PgPool, username: &str) -> Result<Option<User>, sqlx::Error> {
     sqlx::query_as!(
         User,
         "select id, username, user_perms, project_perms, brand_perms, model_perms, item_perms from users where username = $1",
@@ -41,10 +41,13 @@ pub async fn find_by_username(
     ).fetch_optional(pool).await
 }
 
-pub async fn find_by_id_wp(
-    pool: &PgPool,
-    id: Uuid
-) -> Result<Option<UserWithPass>, sqlx::Error> {
+pub async fn get_jwt_ver(pool: &PgPool, id: Uuid) -> Result<Option<i32>, sqlx::Error> {
+    sqlx::query_scalar!("select jwt_version from users where id = $1", id)
+        .fetch_optional(pool)
+        .await
+}
+
+pub async fn find_by_id_wp(pool: &PgPool, id: Uuid) -> Result<Option<UserWithPass>, sqlx::Error> {
     sqlx::query_as!(
         UserWithPass,
         "select id, username, user_perms, project_perms, brand_perms, model_perms, item_perms, password_hash from users where id = $1",
@@ -52,10 +55,7 @@ pub async fn find_by_id_wp(
     ).fetch_optional(pool).await
 }
 
-pub async fn find_by_id(
-    pool: &PgPool,
-    id: Uuid
-) -> Result<Option<User>, sqlx::Error> {
+pub async fn find_by_id(pool: &PgPool, id: Uuid) -> Result<Option<User>, sqlx::Error> {
     sqlx::query_as!(
         User,
         "select id, username, user_perms, project_perms, brand_perms, model_perms, item_perms from users where id = $1",
@@ -63,9 +63,7 @@ pub async fn find_by_id(
     ).fetch_optional(pool).await
 }
 
-pub async fn list_users(
-    pool: &PgPool
-) -> Result<Vec<User>, sqlx::Error> {
+pub async fn list_users(pool: &PgPool) -> Result<Vec<User>, sqlx::Error> {
     sqlx::query_as!(
         User,
         r#"
@@ -73,46 +71,56 @@ pub async fn list_users(
             from users
             order by username
         "#
-    ).fetch_all(pool).await
-}
-
-pub async fn add_u_perm_to_user(
-    pool: &PgPool,
-    id: Uuid,
-    perm: i32,
-) -> Result<User, sqlx::Error> {
-    sqlx::query_as!(
-        User,
-        r#"
-        update users
-        set user_perms = user_perms | $2
-        where id = $1
-        returning id, username, user_perms, project_perms, brand_perms, model_perms, item_perms
-        "#,
-        id,
-        perm
     )
-    .fetch_one(pool)
+    .fetch_all(pool)
     .await
 }
 
-pub async fn remove_u_perm_from_user(
-    pool: &PgPool,
-    id: Uuid,
-    perm: i32,
-) -> Result<User, sqlx::Error> {
-    let mask = !perm;
-    sqlx::query_as!(
-        User,
-        r#"
-        update users
-        set user_perms = user_perms & $2
-        where id = $1
-        returning id, username, user_perms, project_perms, brand_perms, model_perms, item_perms
-        "#,
-        id,
-        mask
-    )
-    .fetch_one(pool)
-    .await
+macro_rules! perm_crt {
+    ($db_name:literal, $prefix:ident) => {
+        paste::paste! {
+            pub async fn [<remove_ $prefix _perm_from_user>](
+                pool: &PgPool,
+                id: Uuid,
+                perm: i32,
+            ) -> Result<User, sqlx::Error> {
+                let mask = !perm;
+                let query = concat!(
+                    "UPDATE users SET ", $db_name, " = ", $db_name, " & $2 ",
+                    "WHERE id = $1 ",
+                    "RETURNING id, username, user_perms, project_perms, ",
+                    "brand_perms, model_perms, item_perms"
+                );
+                sqlx::query_as::<_, User>(query)
+                    .bind(id)
+                    .bind(mask)
+                    .fetch_one(pool)
+                    .await
+            }
+
+            pub async fn [<add_ $prefix _perm_to_user>](
+                pool: &PgPool,
+                id: Uuid,
+                perm: i32,
+            ) -> Result<User, sqlx::Error> {
+                let query = concat!(
+                    "UPDATE users SET ", $db_name, " = ", $db_name, " | $2 ",
+                    "WHERE id = $1 ",
+                    "RETURNING id, username, user_perms, project_perms, ",
+                    "brand_perms, model_perms, item_perms"
+                );
+                sqlx::query_as::<_, User>(query)
+                    .bind(id)
+                    .bind(perm)
+                    .fetch_one(pool)
+                    .await
+            }
+        }
+    };
 }
+
+perm_crt!("user_perms", u);
+perm_crt!("model_perms", m);
+perm_crt!("brand_perms", b);
+perm_crt!("project_perms", p);
+perm_crt!("item_perms", i);

@@ -3,3 +3,4 @@ pub mod project;
 pub mod brand;
 pub mod model;
 pub mod item;
+pub mod auth;

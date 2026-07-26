@@ -34,6 +34,7 @@ pub async fn server(
     app_state.set_https(https);
     app_state.set_cookie_secure(cookie);
 
+    let cleaner_pool = app_state.pool().clone();
     let server = HttpServer::new(move || {
         let mut cors = actix_cors::Cors::default()
             .allow_any_method()
@@ -89,6 +90,8 @@ pub async fn server(
                 ),
             )
     });
+
+    tokio::spawn(crate::entry::cleaner::cleaner_thread(cleaner_pool));
 
     if !https {
         server.bind((host.as_str(), port))?.run().await

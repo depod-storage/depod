@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            select exists (\n            select 1\n            from revoked_tokens\n            where token = $1\n        ) as \"exists!: bool\"\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "exists!: bool",
+        "type_info": "Bool",
+        "origin": "Expression"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "ce5a3aea55e74f9e97ebc99f7b40d3d78ffb7c20239351786b5bd79c64adf9cb"
+}

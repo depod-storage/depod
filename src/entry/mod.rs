@@ -2,6 +2,7 @@ use sqlx::PgPool;
 
 pub mod admin;
 pub mod server;
+pub mod cleaner;
 
 
 pub(in crate::entry) async fn check_bootstrap(pool: &PgPool) -> Result<bool, sqlx::Error> {

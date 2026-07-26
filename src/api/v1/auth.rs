@@ -24,6 +24,7 @@ pub async fn login(state: web::Data<AppState>, body: web::Json<LoginRequest>) ->
         &body.username,
         &body.password,
         state.jwt_secret(),
+        *state.jwt_expire()
     )
     .await;
     match token {
